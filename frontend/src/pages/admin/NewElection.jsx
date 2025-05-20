@@ -3,6 +3,8 @@ import { format } from "date-fns";
 import { Link, useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+
+
 import {
   Card,
   CardContent,
@@ -13,32 +15,37 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import DateTimePicker from "@/components/DateTimePicker";
 
 import { createElection } from "@/services/adminService";
+
+// For TypeScript migration:
+// interface FormData {
+//   name: string;
+// }
 
 const NewElection = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { mutate, isPending, isSuccess, error } = useMutation({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+  });
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+
+  const { mutate, error } = useMutation({
     mutationFn: createElection,
     onSuccess: () => {
       queryClient.invalidateQueries(["elections"]);
       navigate("/admin/dashboard");
     },
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    startDate: "",
-    endDate: "",
+    onSettled: () => setIsSubmitting(false),
   });
 
   useEffect(() => {
-    console.log("Form Data:", formData);
-  }, [formData]);
+    console.log("Form Data:", formData, startDate);
+  }, [formData, startDate]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -48,25 +55,18 @@ const NewElection = () => {
     }));
   };
 
-  const handleDateChange = (id, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate API call
     const payload = {
       name: formData.name,
-      description: formData.description,
-      start_date: formData.startDate || format(new Date(), "yyyy-MM-dd"),
-      end_date: formData.endDate || format(new Date(), "yyyy-MM-dd"),
+      start_date: startDate
+        ? format(new Date(startDate), "yyyy-MM-dd HH:mm:ss")
+        : format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+      end_date: endDate
+        ? format(new Date(endDate), "yyyy-MM-dd HH:mm:ss")
+        : format(new Date(), "yyyy-MM-dd HH:mm:ss"),
     };
-
     mutate(payload);
     console.log("Sending to backend:", payload);
   };
@@ -111,40 +111,25 @@ const NewElection = () => {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      placeholder="Provide details about this election"
-                      className="min-h-[100px]"
-                      value={formData.description}
-                      onChange={handleChange}
-                    />
-                  </div>
 
                   <div className="space-y-2">
                     <Label>Voting Period</Label>
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <div>
+                      <div className="flex flex-col space-y-2">
                         <Label htmlFor="startDate">Start Date</Label>
-                        {/* <DateTimePicker
-                          value={formData.startDate}
-                          onChange={(value) =>
-                            handleDateChange("startDate", value)
-                          }
-                        /> */}
+                      <DateTimePicker value={startDate} onChange={setStartDate} />
                       </div>
-                      <div>
+                      <div className="flex flex-col space-y-2">
                         <Label htmlFor="endDate">End Date</Label>
-                        {/* <DateTimePicker
-                          value={formData.endDate}
-                          onChange={(value) =>
-                            handleDateChange("endDate", value)
-                          }
-                        /> */}
+                       <DateTimePicker value={endDate} onChange={setEndDate}/>
                       </div>
                     </div>
                   </div>
+                  {error && (
+                    <div className="text-red-500 text-sm">
+                      {error.message || "Failed to create election."}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -162,7 +147,9 @@ const NewElection = () => {
             <Button
               type="submit"
               className="border bg-gray-700 text-white cursor-pointer"
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting || !formData.name || !startDate || !endDate
+              }
             >
               {isSubmitting ? "Creating..." : "Create Election"}
             </Button>

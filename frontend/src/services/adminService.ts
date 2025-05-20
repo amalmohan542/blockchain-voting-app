@@ -1,11 +1,11 @@
 import { createElectionApi, fetchElections } from "@/api/adminApi";
 
-export const getAllEllections = async () => {
+export const getAllElections = async () => {
   const res = await fetchElections();
-  return res.data; // unwrap Axios response
+  return res.data;
 };
 
 export const createElection = async (data: any) => {
   const response = await createElectionApi(data);
-  return response.data; // unwrap Axios response
+  return response.data;
 };

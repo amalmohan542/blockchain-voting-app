@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "6ade7ddf-569a-4138-aa9a-d1072c30da94",
+		"name": "AIC Election block chain",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "13505365"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5050/election",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Demo Election\",\n  \"description\": \"Testing time format\",\n  \"start_date\": \"2025-05-17 \",\n  \"end_date\": \"2025-05-17\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": "http://localhost:5050/election"
+			},
+			"response": []
+		},
+		{
+			"name": "get all election",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:5050/election"
+			},
+			"response": []
+		},
+		{
+			"name": "get specific election detials",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

@@ -55,6 +55,12 @@ const AdminDashboard = () => {
               Create New Election
             </Link>
           </Button>
+           <Button asChild>
+            <Link to="/admin/candidate/new">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Candidate to Election
+            </Link>
+          </Button>
         </div>
 
         <ElectionOverView />

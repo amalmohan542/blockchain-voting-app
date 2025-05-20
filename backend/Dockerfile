@@ -4,6 +4,9 @@ FROM python:3.10-slim
 # Set working directory inside container to /app
 WORKDIR /app
 
+ENV PYTHONUNBUFFERED=1
+
+
 # Copy only the backend code into the image
 COPY . .
 

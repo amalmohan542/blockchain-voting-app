@@ -1,4 +1,5 @@
-Flask>=2.2.0
-Flask-SQLAlchemy>=3.0.0
-SQLAlchemy>=1.4,<2.0
+Flask==2.2.5
+Flask-SQLAlchemy==3.0.5
+SQLAlchemy==1.4.51
+typing-extensions==4.10.0
 flask-cors

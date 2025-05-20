@@ -1,0 +1,25 @@
+services:
+  flask-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: flask_container
+    ports:
+      - "5050:5050"
+    working_dir: /app
+    command: bash run.sh
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_dev_container
+    ports:
+      - "3000:5173"           # Vite's default dev port is 5173, mapped to 3000 on host
+    volumes:
+      - ./frontend:/app       # Mount your local code into the container
+      - /app/node_modules     # Prevents node_modules overwrite
+    working_dir: /app
+    command: npm run dev      # Start Vite dev server
+    depends_on:
+      - flask-app

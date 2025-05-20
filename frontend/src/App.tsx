@@ -4,6 +4,7 @@ import HomePage from "@/pages/HomePage"
 import AdminLogin from "@/pages/admin/AdminLogin"
 import NewElection from "@/pages/admin/NewElection"
 import AdminDashboard from "@/pages/admin/AdminDashboard"
+import AddCandidate from "@/pages/admin/AddCandidate"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/elections/new" element={<NewElection />} /> 
+          <Route path="/admin/candidate/new" element={<AddCandidate />} />
         </Routes>
       </Router>
 

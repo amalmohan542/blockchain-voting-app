@@ -1,5 +1,6 @@
 from . import create_app, db  # ✅ relative import
 from flask_cors import CORS
+from app.models import Election, Candidate
 
 app = create_app()
 CORS(app)

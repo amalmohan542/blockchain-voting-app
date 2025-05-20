@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "0d1ad0f4-584e-40b1-bb6c-116c61084730",
+		"name": "Candidate API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44924591"
+	},
+	"item": [
+		{
+			"name": "Add Candidate",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"election_id\": \"elec_001\",\r\n  \"candidates\": [\r\n    {\"name\": \"Alice Johnson\", \"party\": \"Party A\"},\r\n    {\"name\": \"Bob Smith\", \"party\": \"Party B\"},\r\n    {\"name\": \"Carol Li\", \"party\": \"Party C\"}\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5050/candidates",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5050",
+					"path": [
+						"candidates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Candidate by Election ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5050/candidates/elec_001",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5050",
+					"path": [
+						"candidates",
+						"elec_001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Candidate",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5050/candidate/cand_001",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5050",
+					"path": [
+						"candidate",
+						"cand_001"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
