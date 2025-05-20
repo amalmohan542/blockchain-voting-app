@@ -1,17 +1,29 @@
 import React, { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
-import {Badge } from "@/components/ui/badge"
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-
 import { mockElections } from '@/constants/common'
 import { formatDate, getParticipationRate } from '@/lib/utils'
 import StatusBadge from './StatusBadge'
 
+import { getAllEllections } from '@/services/adminService'
+
 
 const ElectionManagement = () => {
+  const { data: elections = [], isLoading, error } = useQuery({
+     queryKey: ['elections'],
+     queryFn: getAllEllections,
+   });
   const [activeElection, setActiveElection] = useState(mockElections[0])
+     
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error loading elections</div>
+
+
+    console.log('Elections data:', isLoading,elections);
+ 
     
   return (
     <>
@@ -35,16 +47,16 @@ const ElectionManagement = () => {
                        </tr>
                      </thead>
                      <tbody>
-                       {mockElections.map((election) => (
+                       {elections.map((election:any) => (
                          <tr key={election.id} className="border-b text-sm ">
-                           <td className="whitespace-nowrap py-4 pl-4 pr-3 font-medium">{election.title}</td>
-                           <td className="whitespace-nowrap px-3 py-4"><StatusBadge status={election.status}/></td>
-                           <td className="whitespace-nowrap px-3 py-4">{formatDate(election.startDate)}</td>
-                           <td className="whitespace-nowrap px-3 py-4">{formatDate (election.endDate)}</td>
-                           <td className="whitespace-nowrap px-3 py-4">
+                           <td className="whitespace-nowrap py-4 pl-4 pr-3 font-medium">{election?.name}</td>
+                           <td className="whitespace-nowrap px-3 py-4"><StatusBadge status={election?.status}/></td>
+                           <td className="whitespace-nowrap px-3 py-4">{formatDate(election?.startDate)}</td>
+                           <td className="whitespace-nowrap px-3 py-4">{formatDate (election?.endDate)}</td>
+                           {/* <td className="whitespace-nowrap px-3 py-4">
                              {election.status === "upcoming" ? "Not started" : `${getParticipationRate(election)}%`}
-                           </td>
-                           <td className="whitespace-nowrap px-3 py-4">
+                           </td> */}
+                           {/* <td className="whitespace-nowrap px-3 py-4">
                              <div className="flex space-x-2">
                                <Button variant="outline" size="sm" onClick={() => setActiveElection(election)}>
                                  View
@@ -60,7 +72,7 @@ const ElectionManagement = () => {
                                  </Button>
                                )}
                              </div>
-                           </td>
+                           </td> */}
                          </tr>
                        ))}
                      </tbody>

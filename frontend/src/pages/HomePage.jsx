@@ -1,22 +1,6 @@
 import FeatureCard from "@/components/FeatureCard";
-import { useEffect } from "react";
-
 
 export default function HomePage() {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  console.log("API URL:", apiUrl);
-  // Check if the API is running
-  useEffect(() => {
-    console.log("Checking API status...");
-    fetch(`${apiUrl}/election`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("API status:", data);
-      })
-      .catch((err) => {
-        console.error("API call failed:", err);
-      });
-  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="container mx-auto px-4 py-16">

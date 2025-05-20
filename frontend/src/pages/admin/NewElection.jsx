@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { format } from "date-fns";
 import { Link, useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import {
   Card,
@@ -12,14 +14,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-// import { DateTimePicker } from "@/components/DateTimePicker";
+
+import { createElection } from "@/services/adminService";
 
 const NewElection = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { mutate, isPending, isSuccess, error } = useMutation({
+    mutationFn: createElection,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["elections"]);
+      navigate("/admin/dashboard");
+    },
+  });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    title: "",
+    name: "",
     description: "",
     startDate: "",
     endDate: "",
@@ -50,17 +61,14 @@ const NewElection = () => {
 
     // Simulate API call
     const payload = {
-      title: formData.title,
+      name: formData.name,
       description: formData.description,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
+      start_date: formData.startDate || format(new Date(), "yyyy-MM-dd"),
+      end_date: formData.endDate || format(new Date(), "yyyy-MM-dd"),
     };
 
+    mutate(payload);
     console.log("Sending to backend:", payload);
-
-    setTimeout(() => {
-      navigate("/admin/dashboard");
-    }, 1500);
   };
 
   return (
@@ -93,11 +101,11 @@ const NewElection = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Election Title</Label>
+                    <Label htmlFor="name">Election Title</Label>
                     <Input
-                      id="title"
+                      id="name"
                       placeholder="e.g., Student Council Election 2023"
-                      value={formData.title}
+                      value={formData.name}
                       onChange={handleChange}
                       required
                     />
@@ -164,6 +172,5 @@ const NewElection = () => {
     </div>
   );
 };
-
 
 export default NewElection;
