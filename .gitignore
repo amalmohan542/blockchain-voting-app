@@ -1,0 +1,38 @@
+# macOS system files
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Virtual environments
+venv/
+env/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.orig
+
+# Vite cache
+.vite
+
+# Node.js / Frontend
+node_modules/
+build/
+dist/
+
+# env files
+.env
+
